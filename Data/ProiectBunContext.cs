@@ -19,5 +19,7 @@ namespace ProiectBun.Data
         public DbSet<ProiectBun.Models.Marca> Marca { get; set; }
 
         public DbSet<ProiectBun.Models.Sofer> Sofer { get; set; }
+
+        public DbSet<ProiectBun.Models.Category> Category { get; set; }
     }
 }

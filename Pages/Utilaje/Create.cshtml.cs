@@ -6,12 +6,15 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using ProiectBun.Data;
+using ProiectBun.Models;
 using ProiectBun.Models;
 
 namespace ProiectBun.Pages.Utilaje
 {
-    public class CreateModel : PageModel
+    public class CreateModel : UtilajCategoriesPageModel
+
     {
         private readonly ProiectBun.Data.ProiectBunContext _context;
 
@@ -26,26 +29,41 @@ namespace ProiectBun.Pages.Utilaje
 "MarcaName");
             ViewData["SoferID"] = new SelectList(_context.Set<Sofer>(), "ID",
 "SoferName");
-            
+
+            var utilaj = new Utilaj();
+            utilaj.UtilajCategories = new List<UtilajCategory>();
+            PopulateAssignedCategoryData(_context, utilaj);
             return Page();
+
         }
 
         [BindProperty]
         public Utilaj Utilaj { get; set; }
-        
+
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(string[] selectedCategories)
         {
-          if (!ModelState.IsValid)
+            var newUtilaj = new Utilaj();
+            if (selectedCategories != null)
             {
-                return Page();
+                newUtilaj.UtilajCategories = new List<UtilajCategory>();
+                foreach (var cat in selectedCategories)
+                {
+                    var catToAdd = new UtilajCategory
+                    {
+                        CategoryID = int.Parse(cat)
+                    };
+                    newUtilaj.UtilajCategories.Add(catToAdd);
+                }
             }
-
+            Utilaj.UtilajCategories = newUtilaj.UtilajCategories;
             _context.Utilaj.Add(Utilaj);
             await _context.SaveChangesAsync();
-
             return RedirectToPage("./Index");
         }
+        
+
+           
+        }
     }
-}
