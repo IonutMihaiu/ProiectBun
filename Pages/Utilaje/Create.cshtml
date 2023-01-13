@@ -1,0 +1,62 @@
+﻿@page
+@model ProiectBun.Pages.Utilaje.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Utilaj</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Utilaj.NumeUtilaj" class="control-label"></label>
+                <input asp-for="Utilaj.NumeUtilaj" class="form-control" />
+                <span asp-validation-for="Utilaj.NumeUtilaj" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Utilaj.SoferID" class="control-label">Numele Soferului</label>
+                <select asp-for="Utilaj.SoferID" class="form-control" asp-items="ViewBag.SoferID">
+                </select>
+                <span asp-validation-for="Utilaj.SoferID" class="text-danger"></span>
+            </div>
+            
+            <div class="form-group">
+                <label asp-for="Utilaj.Pret" class="control-label"></label>
+                <input asp-for="Utilaj.Pret" class="form-control" />
+                <span asp-validation-for="Utilaj.Pret" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Utilaj.StartDate" class="control-label"></label>
+                <input asp-for="Utilaj.StartDate" class="form-control" />
+                <span asp-validation-for="Utilaj.StartDate" class="textdanger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Utilaj.FinishDate" class="control-label"></label>
+                <input asp-for="Utilaj.FinishDate" class="form-control" />
+                <span asp-validation-for="Utilaj.FinishDate" class="textdanger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Utilaj.MarcaID" class="control-label">Marca utilajului</label>
+                <select asp-for="Utilaj.MarcaID" class="form-control" asp-items="ViewBag.MarcaID">
+                </select>
+                <span asp-validation-for="Utilaj.MarcaID" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
