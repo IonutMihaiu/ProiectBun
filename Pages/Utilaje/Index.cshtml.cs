@@ -19,14 +19,23 @@ namespace ProiectBun.Pages.Utilaje
             _context = context;
         }
 
-        public IList<Utilaj> Utilaj { get;set; } = default!;
+        public IList<Utilaj> Utilaj { get; set; } = default!;
 
         public UtilajData UtilajD { get; set; }
         public int UtilajID { get; set; }
         public int CategoryID { get; set; }
-        public async Task OnGetAsync(int? id, int? categoryID)
+        public string NumeUtilajSort { get; set; }
+        public string SoferSort { get; set; }
+        public string CurrentFilter { get; set; }
+        public async Task OnGetAsync(int? id, int? categoryID, string sortOrder, string
+searchString)
         {
             UtilajD = new UtilajData();
+
+            NumeUtilajSort = String.IsNullOrEmpty(sortOrder) ? "numeutilaj_desc" : "";
+            SoferSort = String.IsNullOrEmpty(sortOrder) ? "sofer_desc" : "";
+
+            CurrentFilter = searchString;
 
             UtilajD.Utilaje = await _context.Utilaj
             .Include(b => b.Marca)
@@ -36,12 +45,32 @@ namespace ProiectBun.Pages.Utilaje
             .AsNoTracking()
             .OrderBy(b => b.NumeUtilaj)
             .ToListAsync();
-            if (id != null)
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                UtilajD.Utilaje = UtilajD.Utilaje.Where(s => s.Sofer.SoferName.Contains(searchString)
+
+               || s.Sofer.SoferName.Contains(searchString)
+               || s.NumeUtilaj.Contains(searchString));
+            }
+                if (id != null)
+                    
             {
                 UtilajID = id.Value;
                 Utilaj utilaj = UtilajD.Utilaje
                 .Where(i => i.ID == id.Value).Single();
                 UtilajD.Categories = utilaj.UtilajCategories.Select(s => s.Category);
+            }
+            switch (sortOrder)
+            {
+                case "numeutilaj_desc":
+                    UtilajD.Utilaje = UtilajD.Utilaje.OrderByDescending(s =>
+                   s.NumeUtilaj);
+                    break;
+                case "sofer_desc":
+                    UtilajD.Utilaje = UtilajD.Utilaje.OrderByDescending(s =>
+                   s.Sofer);
+                    break;
             }
         }
     }

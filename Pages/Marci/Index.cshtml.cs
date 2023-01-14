@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using ProiectBun.Data;
 using ProiectBun.Models;
+using ProiectBun.Models.ViewModels;
 
 namespace ProiectBun.Pages.Marci
 {
@@ -19,13 +21,25 @@ namespace ProiectBun.Pages.Marci
             _context = context;
         }
 
-        public IList<Marca> Marca { get;set; } = default!;
+        public IList<Marca> Marca { get; set; } = default!;
 
-        public async Task OnGetAsync()
+        public MarcaIndexData MarcaData { get; set; }
+        public int MarcaID { get; set; }
+        public int UtilajID { get; set; }
+        public async Task OnGetAsync(int? id, int? bookID)
         {
-            if (_context.Marca != null)
+            MarcaData = new MarcaIndexData();
+            MarcaData.Marci = await _context.Marca
+            .Include(i => i.Utilaje)
+            .ThenInclude(c => c.Sofer)
+            .OrderBy(i => i.MarcaName)
+            .ToListAsync();
+            if (id != null)
             {
-                Marca = await _context.Marca.ToListAsync();
+                MarcaID = id.Value;
+                Marca marca = MarcaData.Marci
+                .Where(i => i.ID == id.Value).Single();
+                MarcaData.Utilaje = marca.Utilaje;
             }
         }
     }

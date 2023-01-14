@@ -5,19 +5,34 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Toate utilajele disponibile!</h1>
 
 <p>
-    <a asp-page="Create">Create New</a>
+    <a asp-page="Create">Create new</a>
 </p>
+<form asp-page="./Index" method="get">
+    <div class="form-actions no-color">
+        <p>
+            Gasit dupa Numele Utilajului / Numele Soferului:
+            <input type="text" name="SearchString" value="@Model.CurrentFilter" />
+            <input type="submit" value="Search" class="btn btn-primary" /> |
+            <a asp-page="./Index">Back to full List</a>
+        </p>
+    </div>
+</form>
 <table class="table">
     <thead>
         <tr>
             <th>
+                
+                <a asp-page="./Index" asp-route-sortOrder="@Model.NumeUtilajSort">
                 @Html.DisplayNameFor(model => model.Utilaj[0].NumeUtilaj)
+                </a>
             </th>
             <th>
+                <a asp-page="./Index" asp-route-sortOrder="@Model.SoferSort">
                 @Html.DisplayNameFor(model => model.Utilaj[0].Sofer)
+                </a>
             </th>
            
             <th>
