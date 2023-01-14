@@ -22,6 +22,32 @@ namespace ProiectBun.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("ProiectBun.Models.Borrowing", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
+
+                    b.Property<int?>("MemberID")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ReturnDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("UtilajID")
+                        .HasColumnType("int");
+
+                    b.HasKey("ID");
+
+                    b.HasIndex("MemberID");
+
+                    b.HasIndex("UtilajID");
+
+                    b.ToTable("Borrowing");
+                });
+
             modelBuilder.Entity("ProiectBun.Models.Category", b =>
                 {
                     b.Property<int>("ID")
@@ -54,6 +80,35 @@ namespace ProiectBun.Migrations
                     b.HasKey("ID");
 
                     b.ToTable("Marca");
+                });
+
+            modelBuilder.Entity("ProiectBun.Models.Member", b =>
+                {
+                    b.Property<int>("ID")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ID"), 1L, 1);
+
+                    b.Property<string>("Adress")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FirstName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("LastName")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Phone")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID");
+
+                    b.ToTable("Member");
                 });
 
             modelBuilder.Entity("ProiectBun.Models.Sofer", b =>
@@ -132,6 +187,21 @@ namespace ProiectBun.Migrations
                     b.ToTable("UtilajCategory");
                 });
 
+            modelBuilder.Entity("ProiectBun.Models.Borrowing", b =>
+                {
+                    b.HasOne("ProiectBun.Models.Member", "Member")
+                        .WithMany("Borrowings")
+                        .HasForeignKey("MemberID");
+
+                    b.HasOne("ProiectBun.Models.Utilaj", "Utilaj")
+                        .WithMany()
+                        .HasForeignKey("UtilajID");
+
+                    b.Navigation("Member");
+
+                    b.Navigation("Utilaj");
+                });
+
             modelBuilder.Entity("ProiectBun.Models.Utilaj", b =>
                 {
                     b.HasOne("ProiectBun.Models.Marca", "Marca")
@@ -174,6 +244,11 @@ namespace ProiectBun.Migrations
             modelBuilder.Entity("ProiectBun.Models.Marca", b =>
                 {
                     b.Navigation("Utilaje");
+                });
+
+            modelBuilder.Entity("ProiectBun.Models.Member", b =>
+                {
+                    b.Navigation("Borrowings");
                 });
 
             modelBuilder.Entity("ProiectBun.Models.Sofer", b =>
