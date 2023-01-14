@@ -21,13 +21,27 @@ namespace ProiectBun.Pages.Utilaje
 
         public IList<Utilaj> Utilaj { get;set; } = default!;
 
-        public async Task OnGetAsync()
+        public UtilajData UtilajD { get; set; }
+        public int UtilajID { get; set; }
+        public int CategoryID { get; set; }
+        public async Task OnGetAsync(int? id, int? categoryID)
         {
+            UtilajD = new UtilajData();
+
+            UtilajD.Utilaje = await _context.Utilaj
+            .Include(b => b.Marca)
+            .Include(b => b.Sofer)
+            .Include(b => b.UtilajCategories)
+            .ThenInclude(b => b.Category)
+            .AsNoTracking()
+            .OrderBy(b => b.NumeUtilaj)
+            .ToListAsync();
+            if (id != null)
             {
-                Utilaj = await _context.Utilaj
-                .Include(b => b.Marca)
-                .Include(b => b.Sofer)
-                .ToListAsync();
+                UtilajID = id.Value;
+                Utilaj utilaj = UtilajD.Utilaje
+                .Where(i => i.ID == id.Value).Single();
+                UtilajD.Categories = utilaj.UtilajCategories.Select(s => s.Category);
             }
         }
     }
