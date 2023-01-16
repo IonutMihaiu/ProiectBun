@@ -11,5 +11,6 @@ namespace ProiectBun.Models
         public Utilaj? Utilaj { get; set; }
         [DataType(DataType.Date)]
         public DateTime ReturnDate { get; set; }
+        
     }
 }

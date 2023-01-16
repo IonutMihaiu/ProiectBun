@@ -20,12 +20,13 @@
                 @Html.DisplayNameFor(model => model.Borrowing[0].Utilaj)
             </th>
             <th>
+                @Html.DisplayNameFor(model => model.Borrowing[0].Utilaj.Sofer)
+            </th>
+            <th>
                 @Html.DisplayNameFor(model => model.Borrowing[0].ReturnDate)
             </th>
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Borrowing[0].Utilaj.Sofer)
-            </th>
+           
             <th></th>
         </tr>
     </thead>
@@ -39,7 +40,7 @@
                     @Html.DisplayFor(modelItem => item.Utilaj.NumeUtilaj)
             </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Utilaj.Sofer.SoferName)
+                    @Html.DisplayFor(modelItem => item.Utilaj.Sofer)
                 </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ReturnDate)

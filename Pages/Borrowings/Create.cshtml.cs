@@ -29,8 +29,9 @@ namespace ProiectBun.Pages.Borrowings
             x.ID,
                 UtilajFullName = x.NumeUtilaj + " - " + x.Sofer.SoferName
  });
-            ViewData["MemberID"] = new SelectList(_context.Member, "ID", "SoferName");
-        ViewData["UtilajID"] = new SelectList(_context.Utilaj, "utilajList", "ID", "UtilajFullName");
+            ViewData["UtilajID"] = new SelectList(_context.Utilaj, "utilajList", "ID", "UtilajFullName");
+            ViewData["MemberID"] = new SelectList(_context.Member, "ID", "FullName");
+        
             return Page();
         }
 

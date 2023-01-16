@@ -30,5 +30,6 @@ namespace ProiectBun.Models
         public Marca? Marca{ get; set; }
         public ICollection<UtilajCategory>? UtilajCategories { get; set; }
         
+
     }
 }
